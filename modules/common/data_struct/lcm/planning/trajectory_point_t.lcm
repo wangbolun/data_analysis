@@ -1,0 +1,15 @@
+package planning;
+
+//轨迹点
+struct trajectory_point_t
+{
+    double x;     	        // 绝对坐标系下横坐标 [m]
+    double y;		        // 绝对坐标系下纵坐标 [m]
+    double heading_angle;       // 绝对坐标系下方向角 [rad]
+    double speed;	        // 绝对速度 [m/s]
+    double acceleration;        // 绝对加速度 [m/s^2]
+    double curvature;	        // 路点曲率
+    double curvature_rate;      // 路点曲率导数
+    double distance;            // 路点相对于原始点的距离 [m]
+    double relative_time;       // 轨迹上各点到参考点的时间
+}

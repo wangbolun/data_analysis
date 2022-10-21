@@ -1,0 +1,15 @@
+package drivers;
+
+// y = d x^3 + c x^2 + b x + a
+
+struct camera_line_info_t
+{
+    float confidence;   //线的可信度
+    int8_t type;        //线的类别，0白实线，1白虚线等
+    int8_t lineColor;   //车道线的颜色，0白色，1黄色
+    float  length;      //车道线长度
+    float  a;           //拟合曲线参数
+    float  b;
+    float  c;
+    float  d;
+}

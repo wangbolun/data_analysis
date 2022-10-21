@@ -1,0 +1,15 @@
+package fusion;
+
+// 运动障碍结构
+struct fusion_objects_t
+{
+    int64_t utime;//时间戳
+    fusion.moving_object_t leftFrontObject;    //左前障碍物
+    fusion.moving_object_t frontObject;        //正前障碍物
+    fusion.moving_object_t rightFrontObject;    //右前障碍物
+    fusion.moving_object_t leftRearObject;    //左后障碍物
+    fusion.moving_object_t rearObject;        //正后障碍物
+    fusion.moving_object_t rightRearObject;    //右后障碍物
+    fusion.moving_object_t leftObject;        //左边障碍物
+    fusion.moving_object_t rightObject;        //右边障碍物
+}

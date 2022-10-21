@@ -1,0 +1,14 @@
+package planning;
+
+//轨迹
+struct trajectory_path_t
+{
+    int64_t utime; //轨迹发送的时间戳
+    double x;//当前轨迹，对应的车辆全局横坐标　[m]
+    double y;//当前轨迹，对应的车辆全局纵坐标  [m]
+    double heading_angle;//当前轨迹，对应的车辆全局方向角  [rad]
+    int16_t point_count;//路点个数
+    trajectory_point_t point[point_count];  //路点轨迹
+    body_control_unit_t body_control_unit;     //车辆自身相关控制量
+    double remaining_distance;                 // 到目的地的剩余距离
+}

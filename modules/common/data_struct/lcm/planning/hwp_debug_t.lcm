@@ -1,0 +1,21 @@
+package planning;
+struct hwp_debug_t
+{
+    int64_t utime;
+    common.point_2d_t obstacle_position[8];
+    common.point_2d_t obstacle_corner_position[8][5];
+    float obstacle_longitudinal_speed[8];
+    float target_speed;
+    float longitudinal_speed_ego;
+    int64_t left_lane_type;
+    int64_t right_lane_type;
+    int64_t cruising_counter;
+    int64_t cruising_mode;
+    int64_t jam_counter;
+    boolean is_jam;
+    boolean lane_condition[3];
+    int64_t traffic_flow_evaluation;
+    int64_t driver_lane_change_signal;
+    int64_t turn_light;
+    int64_t curve_index;
+}

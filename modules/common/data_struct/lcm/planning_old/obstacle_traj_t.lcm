@@ -1,0 +1,6 @@
+package planning;
+struct obstacle_traj_t
+{
+    int16_t num_points;//障碍物预测轨迹路点个数
+    common.point_2d_t points[num_points];
+}

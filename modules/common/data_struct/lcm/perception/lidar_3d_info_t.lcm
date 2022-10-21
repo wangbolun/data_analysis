@@ -1,0 +1,9 @@
+package perception;
+
+struct lidar_3d_info_t
+{
+    int64_t utime;                          //时间[us]
+    int16_t frequency;                        //频率[Hz]
+    int16_t object_count;                             //目标个数
+    perception.lidar_3d_object_t objects[object_count];            //目标的集合
+}

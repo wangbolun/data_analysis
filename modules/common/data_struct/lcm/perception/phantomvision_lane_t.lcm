@@ -1,0 +1,62 @@
+package lcmtypes;
+
+struct phantomvision_lane_t
+{
+  int32_t id;
+  boolean valid;
+  boolean measured;
+
+  const int8_t LANE_MARK_DASHED = 0,
+    LANE_MARK_SOLID = 1,
+    LANE_MARK_UNDECIDED = 2,
+    LANE_MARK_ROAD_EDGE = 3,
+    LANE_MARK_DOUBLE_LANE_MARK = 4,
+    LANE_MARK_BOTTS_DOTTS = 5,
+    LANE_MARK_INVALID = 6;
+  int8_t mark_type;
+
+  const int8_t LANE_COLOR_UNKNOWN = 0,
+    LANE_COLOR_WHITE = 1,
+    LANE_COLOR_YELLOW = 2,
+    LANE_COLOR_BLUE = 3,
+    LANE_COLOR_RED = 4,
+    LANE_COLOR_GREEN = 5,
+    LANE_COLOR_BLACK = 6;
+  int8_t color;
+
+  const int8_t LANE_QUALITY_UNAVAILABLE = 0,
+    LANE_QUALITY_LOW = 1,
+    LANE_QUALITY_MEDIUM = 2,
+    LANE_QUALITY_HIGH = 3;
+  int8_t quality;
+
+  const int8_t LANE_LOCATION_UNKNOWN = 0,
+    LANE_LOCATION_LEFT = 1,
+    LANE_LOCATION_RIGHT = -1,
+    LANE_LOCATION_NEXT_LEFT = 2,
+    LANE_LOCATION_NEXT_RIGHT = -2,
+    LANE_LOCATION_FAR_LEFT = 3,
+    LANE_LOCATION_FAR_RIGHT = -3;
+  int8_t location;
+
+  // World coordinates
+  float c0;
+  float c1;
+  float c2;
+  float c3;
+
+  float width_m;
+  float view_range_start_m;
+  float view_range_end_m;
+
+  float age_secs;
+  float pitch_rads;
+
+  const int8_t CAM_FRONT_CENTER = 0,
+    CAM_FRONT_CENTER_CROP = 1,
+    CAM_FRONT_CENTER_SVM = 4,
+    CAM_REAR_CENTER_SVM = 15,
+    CAM_SIDE_LEFT = 17,
+    CAM_SIDE_RIGHT = 18;
+  int8_t camera_id;
+}

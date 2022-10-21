@@ -1,0 +1,8 @@
+package drivers;
+
+struct point_obj_t
+{
+    float  x;
+    float  y;
+    float  angle;
+}

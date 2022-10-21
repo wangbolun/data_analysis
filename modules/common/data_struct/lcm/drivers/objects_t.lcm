@@ -1,0 +1,7 @@
+package drivers;
+
+struct objects_t
+{
+    int32_t object_number;
+    drivers.point_obj_t objects[object_number];
+}

@@ -1,0 +1,137 @@
+package lcmtypes;
+
+struct phantomvision_object_t
+{
+  int32_t id;
+  boolean valid;
+  boolean measured;
+
+  // Comprehensive list of all object classes from image annotation tasks
+  const int8_t CLASSIFICATION_UNKNOWN = 0,
+    CLASSIFICATION_CAR = 1,
+    CLASSIFICATION_TRUCK = 2,
+    CLASSIFICATION_MOTORCYCLE = 3,
+    CLASSIFICATION_PEDESTRIAN = 4,
+    CLASSIFICATION_OTHER = 5,
+    CLASSIFICATION_WHEEL = 6,
+    CLASSIFICATION_CART = 7,
+    CLASSIFICATION_SEDAN = 10,
+    CLASSIFICATION_SUV = 11,
+    CLASSIFICATION_VAN = 12,
+    CLASSIFICATION_TRAILER = 13,
+    CLASSIFICATION_BUS = 14,
+    CLASSIFICATION_GLARE = 15,
+    CLASSIFICATION_GENERAL = 16,
+    CLASSIFICATION_STOPPER = 8,
+    CLASSIFICATION_POLE = 9,
+    CLASSIFICATION_BICYCLE = 17,
+    CLASSIFICATION_BICYCLIST = 18,
+    CLASSIFICATION_MOTORCYCLIST = 19,
+    CLASSIFICATION_TRAFFIC_CONE = 20,
+    CLASSIFICATION_TRAFFIC_SIGN = 21,
+    CLASSIFICATION_TRAFFIC_SPEED = 22,
+    CLASSIFICATION_TRAFFIC_STOP = 23,
+    CLASSIFICATION_TRAFFIC_YIELD = 24,
+    CLASSIFICATION_TRAFFIC_CONSTRUCTION = 25,
+    CLASSIFICATION_TRAFFIC_LIGHT = 26;
+  int8_t classification;
+
+  const int8_t VIEW_FACE_UNKNOWN = 0,
+    VIEW_FACE_WHOLE = 1,
+    VIEW_FACE_FRONT = 2,
+    VIEW_FACE_REAR = 3,
+    VIEW_FACE_SIDE = 4,
+    VIEW_FACE_FRONT_LEFT = 5,
+    VIEW_FACE_FRONT_RIGHT = 6,
+    VIEW_FACE_REAR_LEFT = 7,
+    VIEW_FACE_REAR_RIGHT = 8,
+    VIEW_FACE_SIDE_FRONT = 9,
+    VIEW_FACE_SIDE_REAR = 10;
+  int8_t view_face;
+
+  const int8_t LANE_ASSIGNMENT_UNKNOWN = 127,
+    LANE_ASSIGNMENT_CENTER = 0,
+    LANE_ASSIGNMENT_LEFT = 1,
+    LANE_ASSIGNMENT_RIGHT = -1,
+    LANE_ASSIGNMENT_NEXT_LEFT = 2,
+    LANE_ASSIGNMENT_NEXT_RIGHT = -2,
+    LANE_ASSIGNMENT_FAR_LEFT = 3,
+    LANE_ASSIGNMENT_FAR_RIGHT = -3;
+  int8_t lane_assignment;
+
+  const int8_t BRAKE_LIGHT_UNKNOWN = 0,
+    BRAKE_LIGHT_OFF = 1,
+    BRAKE_LIGHT_ON = 2;
+  int8_t brake_light;
+
+  const int8_t FLASH_LIGHT_UNKNOWN = 0,
+    FLASH_LIGHT_OFF = 1,
+    FLASH_LIGHT_ON = 2,
+    FLASH_LIGHT_BLINK = 3;
+  int8_t flash_light;
+
+  const int8_t TURN_SIGNAL_UNKNOWN = 0,
+    TURN_SIGNAL_OFF = 1,
+    TURN_SIGNAL_LEFT = 2,
+    TURN_SIGNAL_RIGHT = 3,
+    TURN_SIGNAL_BOTH = 4;
+  int8_t turn_signal;
+
+  const int8_t OBJECT_CONFIDENCE_UNKNOWN = 0,
+    OBJECT_CONFIDENCE_LOW = 1,
+    OBJECT_CONFIDENCE_MID = 2,
+    OBJECT_CONFIDENCE_HIGH = 3;
+  int8_t object_confidence;
+
+  // Top-N classification and their confidences in [0,1]
+  int32_t num_class_candidates;
+  int8_t classification_candidates[num_class_candidates];
+  int32_t num_class_confidences;
+  float classification_confidences[num_class_confidences];
+
+  float position_x_m;
+  float position_y_m;
+  float rel_velocity_x_mps;
+  float rel_velocity_y_mps;
+  float rel_accel_x_mps2;
+  float rel_accel_y_mps2;
+
+  float range_velocity_mps;
+  float range_m;
+  float angle_rads;
+
+  float width_m;
+  float length_m;
+  float height_m;
+  float orientation_rads;
+
+  boolean total_left_bounding_angle_valid;
+  boolean total_right_bounding_angle_valid;
+  float total_left_bounding_angle_rads;
+  float total_right_bounding_angle_rads;
+
+  boolean face_left_bounding_angle_valid;
+  boolean face_right_bounding_angle_valid;
+  float face_left_bounding_angle_rads;
+  float face_right_bounding_angle_rads;
+
+  float age_secs;
+  float time_to_collision_secs;
+  boolean cipv;
+  boolean oncoming_traffic;
+  boolean cross_traffic;
+
+  int32_t num_extra_values;
+  float extra_values[num_extra_values];
+  int32_t num_extra_infos;
+  string extra_infos[num_extra_infos];
+
+  const int8_t CAM_FRONT_CENTER = 0,
+    CAM_FRONT_CENTER_CROP = 1,
+    CAM_FRONT_CENTER_SVM = 4,
+    CAM_REAR_CENTER_SVM = 15,
+    CAM_SIDE_LEFT = 17,
+    CAM_SIDE_RIGHT = 18;
+  int8_t camera_id;
+}
+

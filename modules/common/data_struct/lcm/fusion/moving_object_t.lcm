@@ -1,0 +1,9 @@
+package fusion;
+
+// 运动障碍结构
+struct moving_object_t
+{
+    common.point_2d_t objectCenterPosition;    //障碍中心位置坐标x,y
+    common.point_2d_t objectCenterSpeed;        //障碍的运动速度，x,y方向
+    fusion.object_outline_t objectOutline;//障碍的轮廓点集
+}

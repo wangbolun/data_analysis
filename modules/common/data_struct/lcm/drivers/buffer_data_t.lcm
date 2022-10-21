@@ -1,0 +1,8 @@
+package drivers;
+
+struct buffer_data_t
+{
+	int64_t utime;
+	int32_t data_length;
+	byte data[data_length];
+}

@@ -1,0 +1,13 @@
+package planning;
+
+//车辆自身相关控制量
+struct body_control_unit_t
+{
+    int8_t turn_signal;    // 0 - 无 / 1 - 左转向灯 / 2 - 右转向灯
+    int8_t gear;    //档位　0 - N; 1 - D; 2 - R; 3 - P; 4 - Low; 5 - Invalid; 6 - None
+    int8_t beam_intensity;    // 0 - 无 / 1 - 远光灯 / 2 - 普通光灯 / 3 - 近光灯
+    boolean is_horn_engaged;    //是否鸣笛 false - 静默　/ true - 鸣笛
+    boolean is_parking_brake_engaged;    //驻车制动 false - 　/ true - 制动
+    boolean is_hazard_light_engaged;    // false -   / true - 双闪信号
+    boolean is_emergency_stop_engaged;//急停标志位
+}

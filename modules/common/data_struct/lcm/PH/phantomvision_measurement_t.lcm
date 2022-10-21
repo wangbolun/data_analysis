@@ -1,0 +1,11 @@
+package lcmtypes;
+
+struct phantomvision_measurement_t
+{
+  int32_t num_lanes;
+  phantomvision_lane_t lanes[num_lanes];
+  int32_t num_objects;
+  phantomvision_object_t objects[num_objects];
+
+  int64_t  hw_timestamp;
+}

@@ -1,0 +1,55 @@
+package vehicle;
+
+// This is a new struct that will (eventually) replace vehicle_status_t
+// The purpose is to include more information about the vehicle, including actuation signals
+struct vehicle_state_t //车队成员状态 （本车信息）
+{
+    int64_t utime;                      // 时间戳 [ms]
+
+    // Vehicle properties
+    string vin;                         // 本车车架号 （如果是车队，本车车架号@角色)
+    string license_plate;               // 车牌
+
+    // 反馈信号 / Feedback signals -----------------------------------------------------------------
+    int8_t autodrive_enable;           // 自动驾驶状态 人工-0 自动驾驶-1
+    int8_t steering_enable;            // 方向盘使能 (electronic power steering)
+    int8_t throttle_enable;             // 油门使能
+    int8_t brake_enable;                // 制动使能
+    int8_t acceleration_enable;         // 加速度控制使能
+    int8_t gear_enable;                 // 档位使能
+    int8_t lights_enable;                 // 车灯控制
+    float  maximum_user_speed;             // 用户最高速度 [m/s]
+    float  vehicle_speed;                  // 速度 [m/s]
+    float  wheel_speed_rl;                 // 左后轮速 [m/s]
+    float  wheel_speed_rr;                 // 右后轮速 [m/s]
+    float  acceleration_longitudinal;      // 纵向加速度 [m/s^2]
+    float  acceleration_lateral;           // 横向加速度 [m/s^2]
+    float  yaw_rate;                       // 横摆角速 [rad/s]
+    int8_t turn_switch;                 // 转向杆 0 - None, 1 - 右, 2 - 左
+    float  battery_level;                 // 电池量
+
+    float  throttle_status;                       // 油门
+    float  brake_status;                          // 制动
+    float  steering_angle_status;                 // 方向盘角度 [rad]
+    float  steering_speed_status;                 // 方向盘速度 [rad/s]
+    int8_t gear_status;                           // 档位 0 - N; 1 - D; 2 - R; 3 - P; 4 - Low; 5 - Invalid; 6 - None
+    int8_t turn_light_status;                     // 转向灯  0 - 无, 1 - 右, 2 - 左, 3 - 双闪
+    int8_t brake_light_status;                     // 制动灯
+    int8_t beam_status;                         // 0 - 无 / 1 - 远光灯 / 2 - 普通光灯 / 3 - 近光灯
+    int8_t horn_status;                         // 喇叭
+    int8_t windshield_wiper_status;             // 雨刷
+
+    // 控制信号 / Control signals ---------------------------------------------------------------
+    float  throttle_command;                       // 油门控制信号 (autopilot system)
+    float  acceleration_command;                 // 加速度控制信号  [m/s^2]
+    float  brake_command;                          // 制动控制信号
+    float  steering_angle_command;                 // 方向盘角度控制信号 [rad]
+    float  steering_speed_command;                 // 方向盘速度控制信号 [rad/s]
+    int8_t gear_command;                         // 档位控制信号   0 - N; 1 - D; 2 - R; 3 - P; 4 - Low; 5 - Invalid; 6 - None
+    int8_t turn_light_command;                     // 转向灯  0 - 无, 1 - 右, 2 - 左, 3 - 双闪
+    int8_t brake_light_command;                 // 制动灯控制信号
+    int8_t beam_command;                            // 0 - 无 / 1 - 远光灯 / 2 - 普通光灯 / 3 - 近光灯
+    int8_t horn_command;                         // 喇叭控制信号
+    int8_t windshield_wiper_command;            // 雨刷
+
+}

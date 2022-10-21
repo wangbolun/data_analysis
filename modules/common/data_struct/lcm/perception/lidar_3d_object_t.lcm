@@ -1,0 +1,19 @@
+package perception;
+
+struct lidar_3d_object_t
+{
+    int16_t id;                         //目标的ID
+    int8_t type;                         //目标的类别:0-静态,1-动态,2-其他
+    float confidence;                    //目标的可信度
+    float x;                         //车体坐标系下目标中心点x坐标[m](车辆后轴中心为坐标原点)
+    float y;                         //车体坐标系下目标中心点y坐标[m](车辆后轴中心为坐标原点)
+    float length_x;                         //目标x方向的长度[m]
+    float length_y;                         //目标y方向的长度[m]
+    float height;                         //目标的高度（最大z与最小z之差）[m]
+    float speed_x;                          //目标相对速度投影到车体坐标系下x方向速度[km/h]
+    float speed_y;                          //目标相对速度投影到车体坐标系下y方向速度[km/h]
+    int16_t point_count;                    //目标包络点个数
+    common.point_2d_t obj_points[point_count];        //目标包络点集合
+    int16_t track_count;                    //预测轨迹点个数
+    common.point_2d_t track_points[track_count];        //预测轨迹点集合
+}

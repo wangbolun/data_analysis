@@ -1,0 +1,8 @@
+package fusion;
+
+// 车身60m方圆内所有障碍物（动静态障碍统一按静态处理，20cm分辨率）
+struct object_outline_t
+{
+    int16_t objectOutlinePointCount;//障碍物个数
+    common.point_2d_t staticObjectPoints[objectOutlinePointCount];//障碍的轮廓点集
+}
