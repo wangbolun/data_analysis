@@ -48,7 +48,7 @@ QPushButton{
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -78,7 +78,7 @@ QPushButton{
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_21" stretch="3,0,2,0,1,2,1">
+          <layout class="QVBoxLayout" name="verticalLayout_23">
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_32" stretch="1,2,2,1">
              <item>
@@ -103,7 +103,7 @@ QPushButton{
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>pic站位</string>
+                <string/>
                </property>
                <property name="pixmap">
                 <pixmap>/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/statics/捕获.PNG</pixmap>
@@ -152,7 +152,7 @@ QPushButton{
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_30" stretch="3,0,5,0,3">
+            <layout class="QHBoxLayout" name="horizontalLayout_39" stretch="2,0,4,0,2">
              <item>
               <spacer name="horizontalSpacer_13">
                <property name="orientation">
@@ -167,247 +167,346 @@ QPushButton{
               </spacer>
              </item>
              <item>
-              <widget class="Line" name="line_13">
+              <widget class="Line" name="line_15">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
               </widget>
              </item>
              <item>
-              <layout class="QFormLayout" name="formLayout">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label_75">
-                 <property name="styleSheet">
-                  <string notr="true">#label_75{
+              <layout class="QVBoxLayout" name="verticalLayout_21">
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_30">
+                 <item>
+                  <widget class="QLabel" name="label_70">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_70{
     font-size:25px;
     color:rgb(0, 0, 0);
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>用例文件名称：</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QLabel" name="label_72">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">#label_72{
+                   </property>
+                   <property name="text">
+                    <string>车辆类型选择：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_59">
+                   <item>
+                    <widget class="QRadioButton" name="radioButton">
+                     <property name="styleSheet">
+                      <string notr="true">#radioButton{
     font-size:25px;
-    color:rgb(0, 0, 0);
+    color: rgb(0, 0, 255);
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>无数据</string>
-                 </property>
-                </widget>
+                     </property>
+                     <property name="text">
+                      <string>测试车</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QRadioButton" name="radioButton_2">
+                     <property name="styleSheet">
+                      <string notr="true">#radioButton_2{
+    font-size:25px;
+    color: rgb(0, 0, 255);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>配合车</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
                </item>
-               <item row="1" column="0" colspan="2">
-                <widget class="Line" name="line_16">
+               <item>
+                <widget class="Line" name="line_23">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_69">
-                 <property name="font">
-                  <font>
-                   <family>微软雅黑</family>
-                   <pointsize>-1</pointsize>
-                  </font>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_35">
+                 <item>
+                  <widget class="QLabel" name="label_75">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_75{
+    font-size:25px;
+    color:rgb(0, 0, 0);
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>用例文件名称：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QLabel" name="label_72">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_72{
+    font-size:25px;
+    color:rgb(0, 0, 0);
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>无数据</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line_22">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">#label_69{
+                </widget>
+               </item>
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_36" stretch="2,0">
+                 <item>
+                  <widget class="QLabel" name="label_69">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>微软雅黑</family>
+                     <pointsize>-1</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_69{
     font-size:25px;
    color:rgb(0, 0, 0);
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>测试用例选择：</string>
-                 </property>
-                 <property name="textFormat">
-                  <enum>Qt::AutoText</enum>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="5,2,5">
-                 <item>
-                  <widget class="QPushButton" name="pushButton_5">
-                   <property name="styleSheet">
-                    <string notr="true">#pushButton_5{
-    font-size:25px;
-    color: rgb(0, 0, 255);
-}</string>
                    </property>
                    <property name="text">
-                    <string>选择数据</string>
+                    <string>测试用例选择：</string>
+                   </property>
+                   <property name="textFormat">
+                    <enum>Qt::AutoText</enum>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <spacer name="horizontalSpacer_5">
-                   <property name="orientation">
-                    <enum>Qt::Horizontal</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>40</width>
-                     <height>20</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <widget class="QPushButton" name="pushButton_21">
-                   <property name="styleSheet">
-                    <string notr="true">#pushButton_21{
+                  <layout class="QHBoxLayout" name="horizontalLayout_29" stretch="2,0,2">
+                   <item>
+                    <widget class="QPushButton" name="pushButton_5">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">#pushButton_5{
     font-size:25px;
     color: rgb(0, 0, 255);
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>默认数据</string>
-                   </property>
-                  </widget>
+                     </property>
+                     <property name="text">
+                      <string>选择数据</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer_5">
+                     <property name="orientation">
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_21">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">#pushButton_21{
+    font-size:25px;
+    color: rgb(0, 0, 255);
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>默认数据</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </item>
                 </layout>
                </item>
-               <item row="3" column="0" colspan="2">
-                <widget class="Line" name="line_15">
+               <item>
+                <widget class="Line" name="line_21">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="0">
-                <widget class="QLabel" name="label_70">
-                 <property name="styleSheet">
-                  <string notr="true">#label_70{
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_37">
+                 <item>
+                  <widget class="QLabel" name="label_76">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_76{
     font-size:25px;
     color:rgb(0, 0, 0);
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>测试车辆选择：</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <layout class="QHBoxLayout" name="horizontalLayout_59">
-                 <item>
-                  <widget class="QRadioButton" name="radioButton">
-                   <property name="styleSheet">
-                    <string notr="true">#radioButton{
-    font-size:25px;
-    color: rgb(0, 0, 255);
-}</string>
                    </property>
                    <property name="text">
-                    <string>测试车</string>
+                    <string>测试车辆选择：</string>
                    </property>
                   </widget>
                  </item>
                  <item>
-                  <widget class="QRadioButton" name="radioButton_2">
+                  <widget class="QComboBox" name="comboBox_2">
                    <property name="styleSheet">
-                    <string notr="true">#radioButton_2{
+                    <string notr="true">#comboBox_2{
     font-size:25px;
     color: rgb(0, 0, 255);
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>配合车</string>
                    </property>
                   </widget>
                  </item>
                 </layout>
                </item>
-               <item row="5" column="0" colspan="2">
+               <item>
                 <widget class="Line" name="line_17">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
                  </property>
                 </widget>
                </item>
-               <item row="6" column="0">
-                <widget class="QLabel" name="label_71">
-                 <property name="styleSheet">
-                  <string notr="true">#label_71{
+               <item>
+                <layout class="QHBoxLayout" name="horizontalLayout_38">
+                 <item>
+                  <widget class="QLabel" name="label_71">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#label_71{
     font-size:25px;
    color:rgb(0, 0, 0);
 }</string>
-                 </property>
-                 <property name="text">
-                  <string>测试人员选择：</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="6" column="1">
-                <widget class="QComboBox" name="comboBox_5">
-                 <property name="styleSheet">
-                  <string notr="true">#comboBox_5{
+                   </property>
+                   <property name="text">
+                    <string>测试人员选择：</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QComboBox" name="comboBox_5">
+                   <property name="styleSheet">
+                    <string notr="true">#comboBox_5{
     font-size:25px;
     color: rgb(0, 0, 255);
 }</string>
+                   </property>
+                   <item>
+                    <property name="text">
+                     <string>胡靖宇01</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>姜晓旭02</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>王博伦03</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>袁令帅04</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>张东杰05</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>赵国睿06</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>卢超07</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>何伟08</string>
+                    </property>
+                   </item>
+                   <item>
+                    <property name="text">
+                     <string>齐麟09</string>
+                    </property>
+                   </item>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="Line" name="line_20">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
                  </property>
-                 <item>
-                  <property name="text">
-                   <string>胡靖宇01</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>姜晓旭02</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>王博伦03</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>袁令帅04</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>张东杰05</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>赵国睿06</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>卢超07</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>何伟08</string>
-                  </property>
-                 </item>
-                 <item>
-                  <property name="text">
-                   <string>齐麟09</string>
-                  </property>
-                 </item>
                 </widget>
                </item>
               </layout>
              </item>
              <item>
-              <widget class="Line" name="line_14">
+              <widget class="Line" name="line_16">
                <property name="orientation">
                 <enum>Qt::Vertical</enum>
                </property>
@@ -427,6 +526,20 @@ QPushButton{
               </spacer>
              </item>
             </layout>
+           </item>
+           <item>
+            <widget class="Line" name="line_13">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line_14">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="Line" name="line_18">
@@ -525,7 +638,7 @@ QPushButton{
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_14">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout" stretch="3,1,2">
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="6,5">
          <item>
           <widget class="QComboBox" name="comboBox"/>
          </item>
@@ -541,25 +654,6 @@ QPushButton{
             </size>
            </property>
           </spacer>
-         </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_2">
-           <item>
-            <property name="text">
-             <string>LingK03_1号车</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>Ling K03_2号车</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>LingK03_3号车</string>
-            </property>
-           </item>
-          </widget>
          </item>
         </layout>
        </item>
@@ -1461,25 +1555,9 @@ QPushButton{
       </attribute>
       <layout class="QVBoxLayout" name="verticalLayout_19">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="3,1,2">
+        <layout class="QHBoxLayout" name="horizontalLayout_20" stretch="6,5">
          <item>
-          <widget class="QComboBox" name="comboBox_3">
-           <item>
-            <property name="text">
-             <string>被测车辆速度10km/h-目标车右侧超越被测车辆</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>被测车辆速度10km/h-目标车左侧超越被测车辆</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>被测车辆速度20km/h-目标车右侧超越被测车辆</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="comboBox_3"/>
          </item>
          <item>
           <spacer name="horizontalSpacer_6">
@@ -1494,25 +1572,6 @@ QPushButton{
            </property>
           </spacer>
          </item>
-         <item>
-          <widget class="QComboBox" name="comboBox_4">
-           <item>
-            <property name="text">
-             <string>VV6_1号车</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>VV6_4号车</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>欧拉</string>
-            </property>
-           </item>
-          </widget>
-         </item>
         </layout>
        </item>
        <item>
@@ -1520,14 +1579,14 @@ QPushButton{
          <item>
           <widget class="QLabel" name="label_50">
            <property name="text">
-            <string>数据名称：</string>
+            <string>*数据名称：</string>
            </property>
           </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_51">
            <property name="text">
-            <string>测试车辆：</string>
+            <string>*测试车辆：</string>
            </property>
           </widget>
          </item>

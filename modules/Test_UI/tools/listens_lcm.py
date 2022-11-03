@@ -3,7 +3,7 @@ import threading
 from modules.common.data_struct.proto.drivers.camera import mobileye_pb2
 from modules.common.data_struct.proto.localization import gps_imu_info_pb2
 from modules.common.data_struct.proto.vehicle import chassis_pb2
-
+from modules.common.data_struct.lcm.localization import gps_imu_info_t
 
 class ListensLcmAll:
     def __init__(self):
@@ -98,3 +98,31 @@ class ListensLcmAll:
         self.chassis_dict["state"][5] = chassis.vehicle_signal.turn_signal  # 拨杆状态
         self.chassis_dict["state"][6] = chassis.vehicle_signal.fog_light  # 换道状态
         self.chassis_dict["state"][7] = chassis.vehicle_signal.epb_sts_epb_sts  # 手刹
+
+
+class ListensLcmAll_VV6:
+    def __init__(self):
+        self.lcm = lcm.LCM()
+        self.lcm.subscribe('GPS_DATA', self.gps_imu_info_t)
+        self.vv6_gps_imu_dict = {
+            "gps": [0, 0, 0, 0, 0, 0, 0, 0]
+        }
+
+    def lcm_receiver(self):
+        while True:
+            self.lcm.handle()
+
+    def start_receiving(self):
+        t1 = threading.Thread(target=self.lcm_receiver, name="lcm_receiver")
+        t1.setDaemon(True)
+        t1.start()
+
+    def gps_imu_info_t(self,channel, data):
+        gps = gps_imu_info_t.decode(data)
+        self.vv6_gps_imu_dict["gps"][0] = gps.longitude
+        self.vv6_gps_imu_dict["gps"][1] = gps.latitude
+        self.vv6_gps_imu_dict["gps"][2] = "%.8f" % gps.yaw
+        self.vv6_gps_imu_dict["gps"][3] = gps.altitude
+        self.vv6_gps_imu_dict["gps"][4] = "%.2f" % gps.velocity
+        self.vv6_gps_imu_dict["gps"][5] = gps.locationStatus  # 定位模式
+        self.vv6_gps_imu_dict["gps"][6] = gps.satelliteNumber  # 卫星数量
