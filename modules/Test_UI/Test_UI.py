@@ -1,20 +1,17 @@
 import os
 import time
-from threading import Thread
 from PyQt5 import uic
+from threading import Thread
 from PyQt5.QtWidgets import QApplication, QFileDialog
 from tools.listens_lcm import ListensLcmAll, ListensLcmAll_VV6
 from tools.read_case import ReadCase
 
-# 获取工作路径
-main_path = os.getcwd()
-
-
 class Test_UI:
     def __init__(self):
         # 从文件中加载UI定义
-        self.ui = uic.loadUi(os.path.join(main_path, 'statics/test_ui.ui'))
-        # self.ui.comboBox.addItems(['测试用例名称1', '测试用例名称2', '测试用例名称3', '测试用例名称4'])
+        self.main_path = os.getcwd()
+        self.ui = uic.loadUi(os.path.join(self.main_path, 'statics/test_ui.ui'))
+        # self.ui.comboBox.addItems(['测试用例名称1', '测main_path试用例名称2', '测试用例名称3', '测试用例名称4'])
         # print(self.read_case.cases_list_dict['modular'])
         # self.ui.label_73.QPixmap('/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/statics/捕获.PNG')
         self.ui.pushButton_2.setEnabled(False)
@@ -46,15 +43,8 @@ class Test_UI:
 
     def lcm_logger(self):
         # 切换主目录  切换日期目录  创建车辆目录   切入车辆目录
-        os.chdir(main_path)
+        os.chdir(self.main_path)
         os.chdir('./' + str(time.strftime("%Y-%m-%d")))
-        # self.mkdir_file(self.ui.comboBox_2.currentText())
-        # os.chdir('./' + str(self.ui.comboBox_2.currentText()))
-        # self.lcmlog_name = self.ui.comboBox_5.currentText()[-2:] + self.read_case.cases_list_dict['lcm_name'][
-        #     self.read_case.cases_list_dict['id_name'].index(self.ui.comboBox.currentText())] + str(
-        #     time.strftime('%H.%M.%S', time.localtime(time.time())))
-        # os.system('lcm-logger ' + str(self.lcmlog_name) + str(' &'))
-
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_6.setEnabled(False)
         if self.login_car == 0:
@@ -72,13 +62,14 @@ class Test_UI:
             self.ui.plainTextEdit.setPlainText('欢迎使用奥贝测试工具，数据已开始记录...........')
             self.ui.label_8.setText(str('数据名称:  ') + str(self.lcmlog_name))
             self.ui.label.setText(str('测试车辆:  ') + str(self.ui.comboBox_2.currentText()))
+
         elif self.login_car == 1:
             self.mkdir_file('GVT')
             os.chdir('./' + 'GVT')  # 切换目录
             self.lcmlog_name = self.ui.comboBox_5.currentText()[-2:] + str('_') + self.ui.comboBox_2.currentText() + \
                                self.read_case.cases_list_dict['lcm_name'][
                                    self.read_case.cases_list_dict['id_name'].index(
-                                       self.ui.comboBox.currentText())] + str(
+                                       self.ui.comboBox_3.currentText())] + str(
                 time.strftime('%H.%M.%S', time.localtime(time.time())))
             os.system('lcm-logger ' + str(self.lcmlog_name) + str(' &'))
             self.ui.pushButton_7.setEnabled(True)
@@ -93,17 +84,18 @@ class Test_UI:
 
     def kill_lcm(self):
         # 切换目录  接触LCM锁  状态绘制  窗口反馈   数据显示
-        os.system('pkill lcm-logger')
         if self.login_car == 0:
             self.ui.pushButton.setEnabled(True)
             self.ui.pushButton.setText('数据记录')
             self.ui.plainTextEdit.setPlainText('数据结束记录，期待大佬再次使用.')
             self.ui.label_8.setText(str('数据名称:  '))
+            os.system('pkill lcm-logger &')
         elif self.login_car == 1:
             self.ui.pushButton_6.setEnabled(True)
             self.ui.pushButton_6.setText('*数据记录')
             self.ui.plainTextEdit_2.setPlainText('数据结束记录，期待大佬再次使用.')
             self.ui.label_50.setText(str('*数据名称:  '))
+            os.system('pkill lcm-logger &')
 
     def bug_record(self):
         bug_time = (str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))))
@@ -148,7 +140,7 @@ class Test_UI:
         self.ui.pushButton_7.setEnabled(False)
         self.ui.pushButton_8.setEnabled(False)
         self.ui.pushButton_9.setEnabled(False)
-        self.cases_filePath = os.path.join(main_path, 'statics/case_default.csv')
+        self.cases_filePath = os.path.join(self.main_path, 'statics/case_default.csv')
         # self.ui.pushButton_21.setEnabled(False)
         self.ui.label_72.setText(str(os.path.basename(self.cases_filePath)))
         # 解除禁用
@@ -166,7 +158,7 @@ class Test_UI:
         self.cases_filePath, _ = QFileDialog.getOpenFileName(
             self.ui,  # 父窗口对象
             "选择你要执行测的用例",  # 标题
-            r"main_path",  # 起始目录
+            r"self.main_path",  # 起始目录
             "数据类型 (*.csv )"  # 选择类型过滤项，过滤内容在括号中
         )
         self.ui.label_72.setText(str(os.path.basename(self.cases_filePath)))
@@ -178,7 +170,6 @@ class Test_UI:
         elif self.ui.radioButton_2.isChecked() == True:
             self.ui.comboBox_2.clear()
             self.ui.comboBox_2.addItems(['VV6_1', 'VV6_4', 'EULA'])
-
         # 解除禁用
         self.ui.pushButton_22.setEnabled(True)
         self.ui.pushButton_22.setText('进入测试页面')
@@ -205,6 +196,8 @@ class Test_UI:
             self.camera_line_data = ListensLcmAll()  # 监听目标车通道
             self.camera_line_data.start_receiving()
             self.updata()
+            #控制配合车数据记录按钮
+
         elif self.ui.radioButton_2.isChecked() == True:
             self.ui.pushButton_6.setEnabled(True)
             self.ui.pushButton_8.setEnabled(True)
@@ -254,7 +247,6 @@ class Test_UI:
                                          + str(self.camera_line_data.lanes_coeff_dict["lane_type"][1]) + str('      ')
                                          + str(self.camera_line_data.lanes_coeff_dict["lane_type"][2]) + str('      ')
                                          + str(self.camera_line_data.lanes_coeff_dict["lane_type"][3]) + str('      '))
-
         t = Thread(target=run)
         t.start()
 
@@ -274,7 +266,6 @@ class Test_UI:
 
         t = Thread(target=run)
         t.start()
-
 
 if __name__ == '__main__':
     app = QApplication([])
