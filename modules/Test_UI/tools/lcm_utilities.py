@@ -1,11 +1,15 @@
 import lcm
-import dataclasses
+import math
 import time, os
+import dataclasses
 import numpy as np
 import pandas as pd
 from datetime import datetime
+from pyproj import Transformer
 from tqdm.notebook import trange, tqdm
 from modules.control.LingK.Test_UI.tools.read_case import ReadCase
+import modules.common.data_struct.lcm.localization.gps_imu_info_t as gps_imu_info_t  # gps通道
+import modules.common.data_struct.proto.localization.gps_imu_info_pb2 as gps_imu_info_pb2
 
 
 class ReadLcmAll:
@@ -15,6 +19,7 @@ class ReadLcmAll:
                             'start': '',
                             'finish': '',
                             'max_time': '',
+                            "filename_pata": "",  # 输入文件的绝对路径
                             }
         self.case_info_dict = {'filename': '',
                                'id': '',
@@ -25,6 +30,12 @@ class ReadLcmAll:
                                'lookup_data': '',
                                'lookup_data_path': ''
                                }
+        self.gps_info_dict = {
+            "utime": [],
+            "UTM_X": [],
+            "UTM_Y": [],
+            "wey4_velocity": [],
+        }
 
     def create_lcm_dataset(self, lcmlog_file_path):
         lcmlog = lcm.EventLog(lcmlog_file_path, mode="r")
@@ -135,14 +146,13 @@ class ReadLcmAll:
         df_lcm_channel = lcmlog_dataframe[lcmlog_dataframe['channel'].isin([channel])][['data', 'timestamp']]
         packets, packets_timestamp = zip(*df_lcm_channel.values)
         n_packets = len(df_lcm_channel.values)
-
         log_starting_time = np.array(packets_timestamp)
         timestamp = (np.array(packets_timestamp) - log_starting_time[0]) * 1e-6
         # timestamp = np.array(packets_timestamp)
         return log_starting_time, timestamp, packets
 
     def get_lcm_dataset(self, filename):
-        # print(filename)
+        self.lcmlog_dict["filename_path"] = filename
         lcmlog_dataframe = self.create_lcm_dataset(filename)
         lcmlog_metadata = self.generate_lcmlog_statistics(lcmlog_dataframe)
         print(lcmlog_metadata.summary_message)
@@ -178,24 +188,88 @@ class ReadLcmAll:
             self.case_info_dict['time_diff'].append(abs(gvt_time - vut_time).seconds)
 
         # 选择对应数据输出绝对路径
-        try :
+        try:
             if min(self.case_info_dict['time_diff']) < 300:
                 self.case_info_dict['lookup_data'] = (self.case_info_dict['data_name'][
                     (self.case_info_dict['time_diff'].index(min(self.case_info_dict['time_diff'])))])
                 self.case_info_dict['lookup_data_path'] = (os.path.join(gvt_path, self.case_info_dict['lookup_data']))
             else:
                 self.case_info_dict['lookup_data'] = '没找到合适的数据（时间差大于5分钟）'
-
-            return self.case_info_dict
+        # 没有捕获内容，需要添加
         except:
             print('空值---------------------------------------------------------------')
+
+        self.read_gps()
+
+    def read_gps(self):
+        transformer = Transformer.from_crs("EPSG:4326", "EPSG:32650")
+        # 读取测试车数据
+        yaw = []
+        utm_x = []
+        utm_y = []
+        lcmlog_dataframe = self.get_lcm_dataset(self.lcmlog_dict["filename_path"])  # 这里输入了两次  需要解决
+        channel_starting_time, timestamp, packets = self.unpack_packets(lcmlog_dataframe, "abL10n")  # GPS通道数据
+        gps = gps_imu_info_pb2.gpsImu()
+        for packet in packets:
+            gps.ParseFromString(packet)
+            yaw.append(gps.yaw)
+            x, y = transformer.transform(gps.latitude, gps.longitude)
+            utm_x.append(x)
+            utm_y.append(y)
+        utime_4 = []
+        utm_4x = []
+        utm_4y = []
+        stime = []
+        log = lcm.EventLog(self.case_info_dict['lookup_data_path'], "r")
+        for event in log:
+            if event.channel == "GPS_DATA":
+                msg = gps_imu_info_t.decode(event.data)
+                if min(channel_starting_time) < msg.utime < max(channel_starting_time):
+                    utime_4.append(msg.utime)
+                    x, y = transformer.transform(msg.latitude, msg.longitude)
+                    utm_4x.append(x)
+                    utm_4y.append(y)
+                    self.gps_info_dict['wey4_velocity'].append(msg.velocity * 3.6)
+
+        for t in utime_4:
+            stime.append((t - utime_4[0]) / 1000000)
+        UTM_X = []
+        UTM_Y = []
+        try:
+            for i in range(len(utm_4x)):
+                aa = utm_4x[i] - utm_x[i]  # 配合车－实验车XY  构建试验车坐标原点
+                bb = utm_4y[i] - utm_y[i]
+                xq = aa * math.cos(-yaw[i]) + bb * math.sin(-yaw[i])
+                yq = bb * math.cos(-yaw[i]) - aa * math.sin(-yaw[i])
+                UTM_X.append(xq)
+                UTM_Y.append(yq)
+
+        except IndexError:
+            UTM_X.clear()
+            UTM_Y.clear()
+            stime.clear()
+            stime = timestamp
+            for i in range(len(utm_x)):
+                aa = utm_4x[i] - utm_x[i]
+                bb = utm_4y[i] - utm_y[i]
+                xq = aa * math.cos(-yaw[i]) + bb * math.sin(-yaw[i])
+                yq = bb * math.cos(-yaw[i]) - aa * math.sin(-yaw[i])
+                UTM_X.append(xq)
+                UTM_Y.append(yq)
+        self.gps_info_dict['utime'] = stime
+        self.gps_info_dict['UTM_X'] = UTM_X
+        self.gps_info_dict['UTM_Y'] = UTM_Y
+
+        import matplotlib.pyplot as plt
+        plt.plot(self.gps_info_dict['utime'], self.gps_info_dict['UTM_X'], label='Real_X')
+        plt.plot(self.gps_info_dict['utime'], self.gps_info_dict['UTM_Y'], label='Real_Y')
+        plt.legend()
+        plt.show()
 
 
 if __name__ == '__main__':
     APP = ReadLcmAll()
     APP.get_lcm_dataset(
-        '/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/2022-11-08/VUT/01_LingK1_DOW_776_7153_16.49.34')
+        '/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/2022-11-14/VUT/01_LiK2_DOW_457_7296_15.13.05')
     lookup = APP.lookup_data()
-    cc = (APP.get_case_info())
-    for i, v in cc.items():
-        print(i, v)
+    # print(APP.gps_info_dict)

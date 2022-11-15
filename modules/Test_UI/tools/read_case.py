@@ -1,6 +1,5 @@
 import csv
 
-
 class ReadCase:
     def __init__(self):
         self.cases_list_dict = {
@@ -20,4 +19,5 @@ class ReadCase:
                 self.cases_list_dict['modular'].append(line[2])
                 self.cases_list_dict['name'].append(line[4])
                 self.cases_list_dict['id_name'].append(line[0] + line[4])
-                self.cases_list_dict['lcm_name'].append(str('_')+line[2][1:4]+str('_')+line[2][-4:-1]+str('_')+line[0]+str('_'))
+                self.cases_list_dict['lcm_name'].append(
+                    str('_') + line[2][1:4] + str('_') + line[2][-4:-1] + str('_') + line[0] + str('_'))
