@@ -1,9 +1,12 @@
+import os
 import lcm
 import math
-import time, os
+import time
 import dataclasses
 import numpy as np
 import pandas as pd
+from docx import Document
+from docx.shared import Inches
 from datetime import datetime
 from pyproj import Transformer
 from tqdm.notebook import trange, tqdm
@@ -21,6 +24,7 @@ class ReadLcmAll:
                             'max_time': '',
                             "filename_pata": "",  # 输入文件的绝对路径
                             }
+
         self.case_info_dict = {'filename': '',
                                'id': '',
                                'modular': '',
@@ -30,12 +34,13 @@ class ReadLcmAll:
                                'lookup_data': '',
                                'lookup_data_path': ''
                                }
-        self.gps_info_dict = {
-            "utime": [],
-            "UTM_X": [],
-            "UTM_Y": [],
-            "wey4_velocity": [],
-        }
+
+        self.gps_info_dict = {"utime": [],
+                              "UTM_X": [],
+                              "UTM_Y": [],
+                              "wey4_velocity": [],
+                              "max_stime": '',
+                              }
 
     def create_lcm_dataset(self, lcmlog_file_path):
         lcmlog = lcm.EventLog(lcmlog_file_path, mode="r")
@@ -156,6 +161,7 @@ class ReadLcmAll:
         lcmlog_dataframe = self.create_lcm_dataset(filename)
         lcmlog_metadata = self.generate_lcmlog_statistics(lcmlog_dataframe)
         print(lcmlog_metadata.summary_message)
+        self.aaa= lcmlog_metadata.summary_message
         return lcmlog_dataframe
 
     def get_case_info(self):
@@ -220,10 +226,12 @@ class ReadLcmAll:
         utm_4x = []
         utm_4y = []
         stime = []
+        max_utime_4 = []
         log = lcm.EventLog(self.case_info_dict['lookup_data_path'], "r")
         for event in log:
             if event.channel == "GPS_DATA":
                 msg = gps_imu_info_t.decode(event.data)
+                max_utime_4.append(msg.utime)
                 if min(channel_starting_time) < msg.utime < max(channel_starting_time):
                     utime_4.append(msg.utime)
                     x, y = transformer.transform(msg.latitude, msg.longitude)
@@ -259,12 +267,53 @@ class ReadLcmAll:
         self.gps_info_dict['utime'] = stime
         self.gps_info_dict['UTM_X'] = UTM_X
         self.gps_info_dict['UTM_Y'] = UTM_Y
+        max_stime = []
+        for t in max_utime_4:
+            max_stime.append((t - max_utime_4[0]) / 1000000)
+        self.gps_info_dict['max_stime'] = "%.2f" % max(max_stime)
 
-        import matplotlib.pyplot as plt
-        plt.plot(self.gps_info_dict['utime'], self.gps_info_dict['UTM_X'], label='Real_X')
-        plt.plot(self.gps_info_dict['utime'], self.gps_info_dict['UTM_Y'], label='Real_Y')
-        plt.legend()
-        plt.show()
+    def word_docx(self, path1, path2):
+        self.document = Document()
+        self.document.add_heading(
+            '睿蓝_%s_%s' % (self.case_info_dict['modular'].split('/')[1],
+                          self.case_info_dict['modular'].split('/')[2]), 0)
+        self.document.add_heading('1.测试场景数据简述', 1)
+        self.document.add_paragraph('测试日期：%s' % (self.lcmlog_dict['date']))
+        self.document.add_paragraph('测试开始时间：%s' % (self.lcmlog_dict['start']))
+        self.document.add_paragraph('测试车辆：%s' % (self.lcmlog_dict['filename'].split('_')[1]))
+        # self.document.add_paragraph('测试结束时间：%s' % (self.lcmlog_dict['finish']))    #结束时间
+        self.document.add_paragraph('测试用例名称：%s' % (self.case_info_dict['name']))
+        self.document.add_paragraph('测试用例模块：%s' % (self.case_info_dict['modular']))
+
+        # 拉满列表
+        self.table = self.document.add_table(rows=1, cols=4)
+        self.hdr_cells = self.table.rows[0].cells
+        self.hdr_cells[0].text = '数据名称'
+        self.hdr_cells[1].text = '测试车辆'
+        self.hdr_cells[2].text = '测试人员'
+        self.hdr_cells[3].text = '数据时长'
+
+        # 测试车
+        self.row_cells = self.table.add_row().cells
+        self.row_cells[0].text = self.lcmlog_dict['filename']
+        self.row_cells[1].text = self.lcmlog_dict['filename'].split('_')[1]
+        self.row_cells[2].text = self.lcmlog_dict['filename'].split('_')[0]
+        self.row_cells[3].text = self.lcmlog_dict['max_time']
+        # 配车车   没有考虑无配合车数据场景  -------------------------
+        self.row_cells = self.table.add_row().cells
+        self.row_cells[0].text = self.case_info_dict['lookup_data']
+        self.row_cells[1].text = self.case_info_dict['lookup_data'].split('_')[1]
+        self.row_cells[2].text = self.case_info_dict['lookup_data'].split('_')[0]
+        self.row_cells[3].text = str(self.gps_info_dict['max_stime'])
+
+        self.document.add_heading('2.测试场景', 1)
+        self.document.add_picture(path1, width=Inches(6.0))
+        self.document.add_heading('3.测试数据分析', 1)
+        self.document.add_picture(path2, width=Inches(6.0))
+        self.document.add_heading('4.测试结论', 1)
+        self.document.add_paragraph('  经测试，测试车数据01_LingK1_DOW_776_7153_16.49.34,功能触发几次，行驶了多少km，是否符合')
+        # self.document.add_page_break()
+        self.document.save('%s.docx' % (self.case_info_dict['filename']))
 
 
 if __name__ == '__main__':
@@ -272,4 +321,6 @@ if __name__ == '__main__':
     APP.get_lcm_dataset(
         '/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/2022-11-14/VUT/01_LiK2_DOW_457_7296_15.13.05')
     lookup = APP.lookup_data()
-    # print(APP.gps_info_dict)
+    print(APP.case_info_dict)
+    APP.word_docx('/home/wbl/2CAR/data_analysis/LingK13.55.30_Fusion.jpg',
+                  '/home/wbl/2CAR/data_analysis/LingK13.55.30_Fusion.jpg')

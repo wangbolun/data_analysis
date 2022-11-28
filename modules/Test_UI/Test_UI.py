@@ -6,14 +6,13 @@ from PyQt5.QtWidgets import QApplication, QFileDialog
 from tools.listens_lcm import ListensLcmAll, ListensLcmAll_VV6
 from tools.read_case import ReadCase
 
+
 class Test_UI:
     def __init__(self):
+        self.keys = 0  # 状态
         # 从文件中加载UI定义
         self.main_path = os.getcwd()
         self.ui = uic.loadUi(os.path.join(self.main_path, 'statics/test_ui.ui'))
-        # self.ui.comboBox.addItems(['测试用例名称1', '测main_path试用例名称2', '测试用例名称3', '测试用例名称4'])
-        # print(self.read_case.cases_list_dict['modular'])
-        # self.ui.label_73.QPixmap('/home/wbl/2CAR/data_analysis/modules/control/LingK/Test_UI/statics/捕获.PNG')
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_4.setEnabled(False)
@@ -54,7 +53,8 @@ class Test_UI:
                                self.read_case.cases_list_dict['lcm_name'][
                                    self.read_case.cases_list_dict['id_name'].index(
                                        self.ui.comboBox.currentText())] + str(
-                time.strftime('%H.%M.%S', time.localtime(time.time())))
+                time.strftime('%H.%M.%S', time.localtime(time.time()))) + str('_') + str(
+                self.ui.comboBox_6.currentText()) + str('_') + str(self.ui.comboBox_4.currentText())
             os.system('lcm-logger ' + str(self.lcmlog_name) + str(' &'))
             self.ui.pushButton.setText('数据正在记录')
             self.ui.pushButton_3.setEnabled(True)
@@ -77,10 +77,7 @@ class Test_UI:
             self.ui.plainTextEdit_2.setPlainText('欢迎使用奥贝测试工具，数据已开始记录...........')
             self.ui.label_50.setText(str('数据名称:  ') + str(self.lcmlog_name))
             self.ui.label_51.setText(str('测试车辆:  ') + str(self.ui.comboBox_2.currentText()))
-        # self.ui.label_8.setText(str('数据名称:  ') + str(self.lcmlog_name))
-        # 下拉获取选中信息
-        # print(self.ui.comboBox.currentText())
-        # print(self.ui.comboBox_2.currentText())
+
 
     def kill_lcm(self):
         # 切换目录  接触LCM锁  状态绘制  窗口反馈   数据显示
@@ -130,7 +127,7 @@ class Test_UI:
         self.read_case.read(self.cases_filePath)
 
     def login_case_default(self):
-        #去除BUG 选择数据后锁定
+        # 去除BUG 选择数据后锁定
         self.ui.pushButton_2.setEnabled(False)
         self.ui.pushButton.setEnabled(False)
         self.ui.pushButton_4.setEnabled(False)
@@ -169,7 +166,7 @@ class Test_UI:
 
         elif self.ui.radioButton_2.isChecked() == True:
             self.ui.comboBox_2.clear()
-            self.ui.comboBox_2.addItems(['VV6_1', 'VV6_4', 'EULA'])
+            self.ui.comboBox_2.addItems(['WEY1', 'WEY4', 'OULA'])
         # 解除禁用
         self.ui.pushButton_22.setEnabled(True)
         self.ui.pushButton_22.setText('进入测试页面')
@@ -193,10 +190,10 @@ class Test_UI:
             self.ui.pushButton_9.setEnabled(False)
             self.ui.tabWidget.setCurrentIndex(1)
             self.login_car = 0
-            self.camera_line_data = ListensLcmAll()  # 监听目标车通道
-            self.camera_line_data.start_receiving()
+            self.listens_lcm_all = ListensLcmAll()  # 监听目标车通道
+            self.listens_lcm_all.start_receiving()
             self.updata()
-            #控制配合车数据记录按钮
+            # 控制配合车数据记录按钮
 
         elif self.ui.radioButton_2.isChecked() == True:
             self.ui.pushButton_6.setEnabled(True)
@@ -213,40 +210,96 @@ class Test_UI:
             self.vv6_data.start_receiving()
             self.updata_vv6()
 
+    def keyy(self):
+        ###通过按钮获取配合车状态
+        self.key = int((self.read_case.cases_list_dict['key'][
+            self.read_case.cases_list_dict['id_name'].index(self.ui.comboBox.currentText())][0]))
+        if self.key == 0:
+            self.ui.comboBox_6.clear()
+            self.ui.comboBox_4.clear()
+        elif self.key == 1:
+            self.ui.comboBox_6.clear()
+            self.ui.comboBox_4.clear()
+            self.ui.comboBox_6.addItems(['WEY1', 'WEY4', 'OULA'])
+        elif self.key == 2:
+            self.ui.comboBox_6.clear()
+            self.ui.comboBox_4.clear()
+            self.ui.comboBox_6.addItems(['WEY1', 'WEY4', 'OULA'])
+            self.ui.comboBox_4.addItems(['WEY1', 'WEY4', 'OULA'])
+
     def updata(self):
         def run():
             while True:
                 time.sleep(0.1)
+                # 验证数值变化
+                self.key = int(self.read_case.cases_list_dict['key'][
+                                   self.read_case.cases_list_dict['id_name'].index(self.ui.comboBox.currentText())][0])
+                if self.key != self.keys:
+                    self.keyy()
+                    self.keys = self.key
                 self.ui.label_31.setText(str('测试人员:  ') + self.ui.comboBox_5.currentText())
                 self.ui.label_41.setText(
                     str('系统时间:  ') + str(time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time()))))
-                self.ui.label_2.setText(str('定位模式:  ') + str(self.camera_line_data.gps_imu_dict["gps"][5]))
-                self.ui.label_3.setText(str('GPS经度:  ') + str(self.camera_line_data.gps_imu_dict["gps"][0]))
-                self.ui.label_4.setText(str('GPS纬度:  ') + str(self.camera_line_data.gps_imu_dict["gps"][1]))
-                self.ui.label_5.setText(str('GPS航向:  ') + str(self.camera_line_data.gps_imu_dict["gps"][2]))
-                self.ui.label_6.setText(str('GPS速度:  ') + str(self.camera_line_data.gps_imu_dict["gps"][4]))
-                self.ui.label_9.setText(str('卫星数:  ') + str(self.camera_line_data.gps_imu_dict["gps"][6]))
-                self.ui.label_11.setText(str('自驾模式:  ') + str(self.camera_line_data.chassis_dict["state"][0]))
-                self.ui.label_12.setText(str('设置最大速度:  ') + str(self.camera_line_data.chassis_dict["state"][3]))
-                self.ui.label_13.setText(str('底盘速度:  ') + str(self.camera_line_data.chassis_dict["state"][4]))
-                self.ui.label_14.setText(str('转向灯状态:  ') + str(self.camera_line_data.chassis_dict["state"][5]))
-                self.ui.label_15.setText(str('方向盘转角:  ') + str(self.camera_line_data.chassis_dict["state"][1]))
+                self.ui.label_2.setText(str('定位模式:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][5]))
+                self.ui.label_3.setText(str('GPS经度:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][0]))
+                self.ui.label_4.setText(str('GPS纬度:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][1]))
+                self.ui.label_5.setText(str('GPS航向:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][2]))
+                self.ui.label_6.setText(str('GPS速度:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][4]))
+                self.ui.label_9.setText(str('卫星数:  ') + str(self.listens_lcm_all.gps_imu_dict["gps"][6]))
+                self.ui.label_11.setText(str('自驾模式:  ') + str(self.listens_lcm_all.chassis_dict["state"][0]))
+                self.ui.label_12.setText(str('设置最大速度:  ') + str(self.listens_lcm_all.chassis_dict["state"][3]))
+                self.ui.label_13.setText(str('底盘速度:  ') + str(self.listens_lcm_all.chassis_dict["state"][4]))
+                self.ui.label_14.setText(str('转向灯状态:  ') + str(self.listens_lcm_all.chassis_dict["state"][5]))
+                self.ui.label_15.setText(str('方向盘转角:  ') + str(self.listens_lcm_all.chassis_dict["state"][1]))
                 self.ui.label_28.setText(str('中心线长度和横向误差:  ') +
-                                         str(self.camera_line_data.lanes_coeff_dict["center_line"][4]) + str('      ') +
-                                         str(self.camera_line_data.lanes_coeff_dict["center_line"][0]))
+                                         str(self.listens_lcm_all.lanes_coeff_dict["center_line"][4]) + str('      ') +
+                                         str(self.listens_lcm_all.lanes_coeff_dict["center_line"][0]))
                 self.ui.label_29.setText(str('车道线长度:  ') +
-                                         str(self.camera_line_data.lanes_coeff_dict["lane_left_most"][4])
+                                         str(self.listens_lcm_all.lanes_coeff_dict["lane_left_most"][4])
                                          + str('      ') + str(
-                    self.camera_line_data.lanes_coeff_dict["lane_left_middle"][4])
+                    self.listens_lcm_all.lanes_coeff_dict["lane_left_middle"][4])
                                          + str('      ') + str(
-                    self.camera_line_data.lanes_coeff_dict["lane_right_middle"][4])
+                    self.listens_lcm_all.lanes_coeff_dict["lane_right_middle"][4])
                                          + str('      ') + str(
-                    self.camera_line_data.lanes_coeff_dict["lane_right_most"][4]))
+                    self.listens_lcm_all.lanes_coeff_dict["lane_right_most"][4]))
                 self.ui.label_30.setText(str('车道线类型:  ')
-                                         + str(self.camera_line_data.lanes_coeff_dict["lane_type"][0]) + str('      ')
-                                         + str(self.camera_line_data.lanes_coeff_dict["lane_type"][1]) + str('      ')
-                                         + str(self.camera_line_data.lanes_coeff_dict["lane_type"][2]) + str('      ')
-                                         + str(self.camera_line_data.lanes_coeff_dict["lane_type"][3]) + str('      '))
+                                         + str(self.listens_lcm_all.lanes_coeff_dict["lane_type"][0]) + str('      ')
+                                         + str(self.listens_lcm_all.lanes_coeff_dict["lane_type"][1]) + str('      ')
+                                         + str(self.listens_lcm_all.lanes_coeff_dict["lane_type"][2]) + str('      ')
+                                         + str(self.listens_lcm_all.lanes_coeff_dict["lane_type"][3]) + str('      '))
+                self.ui.label_19.setText(
+                    str("%.2f" % self.listens_lcm_all.grid_info_dict["front_left"][2]) + str('      ') + str(
+                        "%.2f" % self.listens_lcm_all.grid_info_dict["front_left"][4]))
+                self.ui.label_20.setText(str("%.2f" % self.listens_lcm_all.grid_info_dict["front"][2]) + str('      ')
+                                         + str("%.2f" % self.listens_lcm_all.grid_info_dict["front"][4]))
+                self.ui.label_18.setText(
+                    str("%.2f" % self.listens_lcm_all.grid_info_dict["front_right"][2]) + str('      ')
+                    + str("%.2f" % self.listens_lcm_all.grid_info_dict["front_right"][4]))
+                self.ui.label_23.setText(str("%.2f" % self.listens_lcm_all.grid_info_dict["left"][2]) + str('      ')
+                                         + str("%.2f" % self.listens_lcm_all.grid_info_dict["left"][4]))
+                self.ui.label_24.setText(str("%.2f" % self.listens_lcm_all.grid_info_dict["right"][2]) + str('      ')
+                                         + str("%.2f" % self.listens_lcm_all.grid_info_dict["right"][4]))
+                self.ui.label_25.setText(
+                    str("%.2f" % self.listens_lcm_all.grid_info_dict["rear_left"][2]) + str('      ')
+                    + str("%.2f" % self.listens_lcm_all.grid_info_dict["rear_left"][4]))
+                self.ui.label_22.setText(str("%.2f" % self.listens_lcm_all.grid_info_dict["rear"][2]) + str('      ')
+                                         + str("%.2f" % self.listens_lcm_all.grid_info_dict["rear"][4]))
+                self.ui.label_26.setText(
+                    str("%.2f" % self.listens_lcm_all.grid_info_dict["rear_right"][2]) + str('      ')
+                    + str("%.2f" % self.listens_lcm_all.grid_info_dict["rear_right"][4]))
+                # ADAS
+                self.ui.label_36.setText(
+                    str('LCA、BSD、DOW模式：  ') + str(self.listens_lcm_all.lcm_info_dict["state_machine"][0])
+                    + str('            ') + str(self.listens_lcm_all.lcm_info_dict["state_machine"][1])
+                    + str('            ') + str(self.listens_lcm_all.lcm_info_dict["state_machine"][2]))
+                self.ui.label_37.setText(
+                    str('报警方向及等级：  ') + str(self.listens_lcm_all.lcm_info_dict["warn"][0])
+                    + str('    ') + str(self.listens_lcm_all.lcm_info_dict["warn"][1]) + str('          ') + str(
+                        self.listens_lcm_all.lcm_info_dict["warn"][2]) + str('    ') + str(
+                        self.listens_lcm_all.lcm_info_dict["warn"][3]) + str('          ') + str(
+                        self.listens_lcm_all.lcm_info_dict["warn"][4]) + str('    ') + str(
+                        self.listens_lcm_all.lcm_info_dict["warn"][5]))
+
         t = Thread(target=run)
         t.start()
 
@@ -266,6 +319,7 @@ class Test_UI:
 
         t = Thread(target=run)
         t.start()
+
 
 if __name__ == '__main__':
     app = QApplication([])
