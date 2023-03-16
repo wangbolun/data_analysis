@@ -16,3 +16,7 @@
 3.Test_UI 修复配合车数据记录命名错误问题；  
 ## Test_UI V1.4
 1.增加lcm_utilities.py，主要新增真值计算方法；  
+
+# CaseAnalysis
+## CaseAnalysis V1.0
+第一版本：运行regular_run.py 可以定时启动服务，服务启动后检索目标路径是否有新的数据，有的话进行数据遍历；  
